@@ -11,6 +11,7 @@ export interface Meal {
   fiber: number;
   serving: string;
   confidence: number;
+  mealType: string;
 }
 
 export interface DailyNutrition {
@@ -21,6 +22,12 @@ export interface DailyNutrition {
   totalCarbs: number;
   totalFat: number;
   totalFiber: number;
+  calories: number;
+  protein: number;
+  carbs: number;
+  fat: number;
+  fiber: number;
+  water: number;
   goals: NutritionGoals;
   remaining: NutritionGoals;
 }
@@ -31,7 +38,19 @@ export interface NutritionGoals {
   carbs: number;
   fat: number;
   fiber: number;
+  water: number;
 }
+
+export interface UserProfile {
+  age: number;
+  gender: string;
+  height: number;
+  weight: number;
+  activityLevel: string;
+  goals: string[];
+}
+
+export type MealEntry = Meal;
 
 class NutritionService {
   private storageKey = 'health-hub-nutrition-data';
@@ -42,7 +61,8 @@ class NutritionService {
       protein: 120,
       carbs: 250,
       fat: 65,
-      fiber: 25
+      fiber: 25,
+      water: 2000
     };
   }
 
@@ -68,25 +88,25 @@ class NutritionService {
     const lowerName = mealName.toLowerCase();
     
     if (lowerName.includes('chicken')) {
-      return { name: mealName, calories: 165, protein: 31, carbs: 0, fat: 3.6, fiber: 0, serving: '100g', confidence: 85 };
+      return { name: mealName, calories: 165, protein: 31, carbs: 0, fat: 3.6, fiber: 0, serving: '100g', confidence: 85, mealType: 'main' };
     } else if (lowerName.includes('rice')) {
-      return { name: mealName, calories: 130, protein: 2.7, carbs: 28, fat: 0.3, fiber: 0.4, serving: '100g', confidence: 90 };
+      return { name: mealName, calories: 130, protein: 2.7, carbs: 28, fat: 0.3, fiber: 0.4, serving: '100g', confidence: 90, mealType: 'main' };
     } else if (lowerName.includes('broccoli')) {
-      return { name: mealName, calories: 34, protein: 2.8, carbs: 7, fat: 0.4, fiber: 2.6, serving: '100g', confidence: 95 };
+      return { name: mealName, calories: 34, protein: 2.8, carbs: 7, fat: 0.4, fiber: 2.6, serving: '100g', confidence: 95, mealType: 'side' };
     } else if (lowerName.includes('salmon')) {
-      return { name: mealName, calories: 208, protein: 25, carbs: 0, fat: 12, fiber: 0, serving: '100g', confidence: 90 };
+      return { name: mealName, calories: 208, protein: 25, carbs: 0, fat: 12, fiber: 0, serving: '100g', confidence: 90, mealType: 'main' };
     } else if (lowerName.includes('banana')) {
-      return { name: mealName, calories: 89, protein: 1.1, carbs: 23, fat: 0.3, fiber: 2.6, serving: '1 medium', confidence: 95 };
+      return { name: mealName, calories: 89, protein: 1.1, carbs: 23, fat: 0.3, fiber: 2.6, serving: '1 medium', confidence: 95, mealType: 'snack' };
     } else if (lowerName.includes('apple')) {
-      return { name: mealName, calories: 52, protein: 0.3, carbs: 14, fat: 0.2, fiber: 2.4, serving: '1 medium', confidence: 95 };
+      return { name: mealName, calories: 52, protein: 0.3, carbs: 14, fat: 0.2, fiber: 2.4, serving: '1 medium', confidence: 95, mealType: 'snack' };
     } else if (lowerName.includes('egg')) {
-      return { name: mealName, calories: 155, protein: 13, carbs: 1.1, fat: 11, fiber: 0, serving: '2 large', confidence: 90 };
+      return { name: mealName, calories: 155, protein: 13, carbs: 1.1, fat: 11, fiber: 0, serving: '2 large', confidence: 90, mealType: 'main' };
     } else if (lowerName.includes('oatmeal')) {
-      return { name: mealName, calories: 154, protein: 5.3, carbs: 27, fat: 3.1, fiber: 4, serving: '100g', confidence: 90 };
+      return { name: mealName, calories: 154, protein: 5.3, carbs: 27, fat: 3.1, fiber: 4, serving: '100g', confidence: 90, mealType: 'breakfast' };
     } else if (lowerName.includes('yogurt')) {
-      return { name: mealName, calories: 59, protein: 10, carbs: 3.6, fat: 0.4, fiber: 0, serving: '100g', confidence: 85 };
+      return { name: mealName, calories: 59, protein: 10, carbs: 3.6, fat: 0.4, fiber: 0, serving: '100g', confidence: 85, mealType: 'snack' };
     } else if (lowerName.includes('bread')) {
-      return { name: mealName, calories: 265, protein: 9, carbs: 49, fat: 3.2, fiber: 2.7, serving: '100g', confidence: 85 };
+      return { name: mealName, calories: 265, protein: 9, carbs: 49, fat: 3.2, fiber: 2.7, serving: '100g', confidence: 85, mealType: 'main' };
     }
 
     return {
@@ -97,7 +117,8 @@ class NutritionService {
       fat: 8,
       fiber: 3,
       serving: '1 serving',
-      confidence: 60
+      confidence: 60,
+      mealType: 'meal'
     };
   }
 
@@ -107,6 +128,7 @@ class NutritionService {
     const meal: Meal = {
       id: Date.now().toString(),
       timestamp: new Date(),
+      mealType: 'meal',
       ...nutritionInfo
     };
 
@@ -139,6 +161,12 @@ class NutritionService {
       totalCarbs: 0,
       totalFat: 0,
       totalFiber: 0,
+      calories: 0,
+      protein: 0,
+      carbs: 0,
+      fat: 0,
+      fiber: 0,
+      water: 0,
       goals,
       remaining: { ...goals }
     };
@@ -148,6 +176,13 @@ class NutritionService {
     dailyData.totalCarbs = dailyData.meals.reduce((sum, meal) => sum + meal.carbs, 0);
     dailyData.totalFat = dailyData.meals.reduce((sum, meal) => sum + meal.fat, 0);
     dailyData.totalFiber = dailyData.meals.reduce((sum, meal) => sum + meal.fiber, 0);
+    
+    // Set individual properties to match totals
+    dailyData.calories = dailyData.totalCalories;
+    dailyData.protein = dailyData.totalProtein;
+    dailyData.carbs = dailyData.totalCarbs;
+    dailyData.fat = dailyData.totalFat;
+    dailyData.fiber = dailyData.totalFiber;
 
     dailyData.remaining = {
       calories: Math.max(0, goals.calories - dailyData.totalCalories),
@@ -169,6 +204,40 @@ class NutritionService {
     const data = this.getAllNutritionData();
     data[dailyData.date] = dailyData;
     localStorage.setItem(this.storageKey, JSON.stringify(data));
+  }
+
+  calculateBMR(weight: number, height: number, age: number, gender: string): number {
+    // Mifflin-St Jeor Equation
+    if (gender.toLowerCase() === 'male') {
+      return 10 * weight + 6.25 * height - 5 * age + 5;
+    } else {
+      return 10 * weight + 6.25 * height - 5 * age - 161;
+    }
+  }
+
+  calculateTDEE(bmr: number, activityLevel: string): number {
+    const multipliers = {
+      'sedentary': 1.2,
+      'light': 1.375,
+      'moderate': 1.55,
+      'active': 1.725,
+      'very_active': 1.9
+    };
+    return bmr * (multipliers[activityLevel.toLowerCase() as keyof typeof multipliers] || 1.2);
+  }
+
+  calculateNutritionGoals(tdee: number, goals: string[]): NutritionGoals {
+    const proteinPerKg = goals.includes('muscle gain') ? 2.2 : 1.6;
+    const protein = Math.round(70 * proteinPerKg); // Assuming 70kg average weight
+    
+    return {
+      calories: Math.round(tdee),
+      protein: protein,
+      carbs: Math.round((tdee * 0.45) / 4), // 45% of calories from carbs
+      fat: Math.round((tdee * 0.25) / 9), // 25% of calories from fat
+      fiber: 25,
+      water: 2000
+    };
   }
 }
 

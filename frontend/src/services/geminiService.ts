@@ -14,6 +14,8 @@ export interface FoodAnalysisResult {
   description: string;
 }
 
+export type FoodAnalysis = FoodAnalysisResult;
+
 export interface HealthRecommendation {
   title: string;
   description: string;
@@ -411,6 +413,20 @@ class GeminiService {
     
         // Default response
         return `For your ${userProfile.goals.join(', ')} goals: maintain a balanced diet, stay hydrated (8-10 glasses daily), get regular exercise, prioritize 7-9 hours sleep, and manage stress. Consult a healthcare professional for personalized advice.`;
+  }
+
+  /**
+   * Search for food information (alias for getFoodNutritionInfo)
+   */
+  async searchFoodInfo(foodName: string): Promise<FoodAnalysisResult> {
+    return this.getFoodNutritionInfo(foodName);
+  }
+
+  /**
+   * Analyze food image (alias for analyzeFoodFromImage)
+   */
+  async analyzeFoodImage(imageFile: File): Promise<FoodAnalysisResult> {
+    return this.analyzeFoodFromImage(imageFile);
   }
 
   /**

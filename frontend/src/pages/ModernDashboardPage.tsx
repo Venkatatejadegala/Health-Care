@@ -10,7 +10,7 @@ import {
   Zap
 } from 'lucide-react';
 import RecentActivityCard from '../components/dashboard/cards/RecentActivityCard';
-import ApiKeyManagementCard from '../components/dashboard/cards/ApiKeyManagementCard';
+import ApiKeyManagementCard from '../../components/dashboard/cards/ApiKeyManagementCard';
 import HealthTipsCard from '../components/dashboard/cards/HealthTipsCard';
 import NutritionTrackerCard from '../components/dashboard/cards/NutritionTrackerCard';
 
