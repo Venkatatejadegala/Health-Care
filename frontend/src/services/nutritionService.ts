@@ -48,6 +48,8 @@ export interface UserProfile {
   weight: number;
   activityLevel: string;
   goals: string[];
+  goal?: string;
+  dietaryRestrictions?: string[];
 }
 
 export type MealEntry = Meal;
@@ -77,7 +79,8 @@ class NutritionService {
         fat: nutritionInfo.fat,
         fiber: nutritionInfo.fiber,
         serving: '1 serving',
-        confidence: nutritionInfo.confidence
+        confidence: nutritionInfo.confidence,
+        mealType: 'meal'
       };
     } catch (error) {
       return this.getFallbackNutrition(mealName);
@@ -128,7 +131,6 @@ class NutritionService {
     const meal: Meal = {
       id: Date.now().toString(),
       timestamp: new Date(),
-      mealType: 'meal',
       ...nutritionInfo
     };
 
@@ -189,7 +191,8 @@ class NutritionService {
       protein: Math.max(0, goals.protein - dailyData.totalProtein),
       carbs: Math.max(0, goals.carbs - dailyData.totalCarbs),
       fat: Math.max(0, goals.fat - dailyData.totalFat),
-      fiber: Math.max(0, goals.fiber - dailyData.totalFiber)
+      fiber: Math.max(0, goals.fiber - dailyData.totalFiber),
+      water: Math.max(0, goals.water - dailyData.water)
     };
 
     return dailyData;
@@ -206,16 +209,44 @@ class NutritionService {
     localStorage.setItem(this.storageKey, JSON.stringify(data));
   }
 
-  calculateBMR(weight: number, height: number, age: number, gender: string): number {
+  calculateBMR(weight: number, height: number, age: number, gender: string): number;
+  calculateBMR(userProfile: UserProfile): number;
+  calculateBMR(weightOrProfile: number | UserProfile, height?: number, age?: number, gender?: string): number {
     // Mifflin-St Jeor Equation
-    if (gender.toLowerCase() === 'male') {
-      return 10 * weight + 6.25 * height - 5 * age + 5;
+    let weight: number, userHeight: number, userAge: number, userGender: string;
+    
+    if (typeof weightOrProfile === 'object') {
+      weight = weightOrProfile.weight;
+      userHeight = weightOrProfile.height;
+      userAge = weightOrProfile.age;
+      userGender = weightOrProfile.gender;
     } else {
-      return 10 * weight + 6.25 * height - 5 * age - 161;
+      weight = weightOrProfile;
+      userHeight = height!;
+      userAge = age!;
+      userGender = gender!;
+    }
+    
+    if (userGender.toLowerCase() === 'male') {
+      return 10 * weight + 6.25 * userHeight - 5 * userAge + 5;
+    } else {
+      return 10 * weight + 6.25 * userHeight - 5 * userAge - 161;
     }
   }
 
-  calculateTDEE(bmr: number, activityLevel: string): number {
+  calculateTDEE(bmr: number, activityLevel: string): number;
+  calculateTDEE(userProfile: UserProfile): number;
+  calculateTDEE(bmrOrProfile: number | UserProfile, activityLevel?: string): number {
+    let bmr: number, userActivityLevel: string;
+    
+    if (typeof bmrOrProfile === 'object') {
+      bmr = this.calculateBMR(bmrOrProfile);
+      userActivityLevel = bmrOrProfile.activityLevel;
+    } else {
+      bmr = bmrOrProfile;
+      userActivityLevel = activityLevel!;
+    }
+    
     const multipliers = {
       'sedentary': 1.2,
       'light': 1.375,
@@ -223,11 +254,23 @@ class NutritionService {
       'active': 1.725,
       'very_active': 1.9
     };
-    return bmr * (multipliers[activityLevel.toLowerCase() as keyof typeof multipliers] || 1.2);
+    return bmr * (multipliers[userActivityLevel.toLowerCase() as keyof typeof multipliers] || 1.2);
   }
 
-  calculateNutritionGoals(tdee: number, goals: string[]): NutritionGoals {
-    const proteinPerKg = goals.includes('muscle gain') ? 2.2 : 1.6;
+  calculateNutritionGoals(tdee: number, goals: string[]): NutritionGoals;
+  calculateNutritionGoals(userProfile: UserProfile): NutritionGoals;
+  calculateNutritionGoals(tdeeOrProfile: number | UserProfile, goals?: string[]): NutritionGoals {
+    let tdee: number, userGoals: string[];
+    
+    if (typeof tdeeOrProfile === 'object') {
+      tdee = this.calculateTDEE(tdeeOrProfile);
+      userGoals = tdeeOrProfile.goals;
+    } else {
+      tdee = tdeeOrProfile;
+      userGoals = goals!;
+    }
+    
+    const proteinPerKg = userGoals.includes('muscle gain') ? 2.2 : 1.6;
     const protein = Math.round(70 * proteinPerKg); // Assuming 70kg average weight
     
     return {

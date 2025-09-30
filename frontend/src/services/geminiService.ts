@@ -5,11 +5,14 @@ const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY || 'AIz
 
 export interface FoodAnalysisResult {
   foodName: string;
+  name: string;
   calories: number;
   protein: number;
   carbs: number;
   fat: number;
   fiber: number;
+  sugar?: number;
+  servingSize?: string;
   confidence: number;
   description: string;
 }
@@ -130,11 +133,14 @@ class GeminiService {
         Return ONLY a valid JSON object with these exact fields:
         {
           "foodName": "string (name of the food)",
+          "name": "string (same as foodName)",
           "calories": number (calories per serving),
           "protein": number (grams of protein),
           "carbs": number (grams of carbohydrates),
           "fat": number (grams of fat),
           "fiber": number (grams of fiber),
+          "sugar": number (grams of sugar, optional),
+          "servingSize": "string (serving size description, optional)",
           "confidence": number (0-100, how confident you are in this analysis),
           "description": "string (brief description of the food)"
         }
@@ -276,11 +282,14 @@ class GeminiService {
         Return ONLY a valid JSON object with these exact fields:
         {
           "foodName": "${foodName}",
+          "name": "${foodName}",
           "calories": number (calories per 100g),
           "protein": number (grams of protein per 100g),
           "carbs": number (grams of carbohydrates per 100g),
           "fat": number (grams of fat per 100g),
           "fiber": number (grams of fiber per 100g),
+          "sugar": number (grams of sugar per 100g, optional),
+          "servingSize": "string (serving size description, optional)",
           "confidence": 95,
           "description": "string (brief description of the food)"
         }
