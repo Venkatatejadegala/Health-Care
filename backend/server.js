@@ -23,7 +23,11 @@ app.use(limiter);
 
 // CORS configuration
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  origin: [
+    process.env.FRONTEND_URL || 'http://localhost:5173',
+    'https://your-app-name.vercel.app', // Add your Vercel URL here
+    'http://localhost:5173' // Keep for development
+  ],
   credentials: true
 }));
 

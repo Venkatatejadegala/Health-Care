@@ -1,7 +1,7 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
 // Initialize Gemini AI with your API key
-const genAI = new GoogleGenerativeAI('AIzaSyAQ-6GlEowqPo9671D0UPPwNl6ceMumRHY');
+const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY || 'AIzaSyAQ-6GlEowqPo9671D0UPPwNl6ceMumRHY');
 
 export interface FoodAnalysisResult {
   foodName: string;
