@@ -1,8 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { Link, useLocation } from 'react-router-dom';
 import { 
   LayoutDashboard, 
   Activity, 
@@ -26,7 +25,8 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => {
-  const pathname = usePathname();
+  const location = useLocation();
+  const pathname = location.pathname;
 
   const navigationItems = [
     {
@@ -128,7 +128,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => {
             return (
               <Link
                 key={item.name}
-                href={item.href}
+                to={item.href}
                 onClick={() => {
                   // Close mobile sidebar after navigation
                   if (window.innerWidth < 1024) {

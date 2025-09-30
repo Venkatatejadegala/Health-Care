@@ -38,6 +38,7 @@ const SmartDashboardPage: React.FC = () => {
     gender: 'male',
     activityLevel: 'moderate',
     goal: 'recomposition',
+    goals: ['recomposition'],
     dietaryRestrictions: []
   });
 
@@ -50,6 +51,27 @@ const SmartDashboardPage: React.FC = () => {
     fat: 0,
     fiber: 0,
     water: 0,
+    totalCalories: 0,
+    totalProtein: 0,
+    totalCarbs: 0,
+    totalFat: 0,
+    totalFiber: 0,
+    goals: {
+      calories: 2000,
+      protein: 120,
+      carbs: 250,
+      fat: 65,
+      fiber: 25,
+      water: 2000
+    },
+    remaining: {
+      calories: 2000,
+      protein: 120,
+      carbs: 250,
+      fat: 65,
+      fiber: 25,
+      water: 2000
+    },
     meals: []
   });
 

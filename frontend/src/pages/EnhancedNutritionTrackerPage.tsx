@@ -31,6 +31,27 @@ const EnhancedNutritionTrackerPage: React.FC = () => {
     fat: 0,
     fiber: 0,
     water: 0,
+    totalCalories: 0,
+    totalProtein: 0,
+    totalCarbs: 0,
+    totalFat: 0,
+    totalFiber: 0,
+    goals: {
+      calories: 2000,
+      protein: 120,
+      carbs: 250,
+      fat: 65,
+      fiber: 25,
+      water: 2000
+    },
+    remaining: {
+      calories: 2000,
+      protein: 120,
+      carbs: 250,
+      fat: 65,
+      fiber: 25,
+      water: 2000
+    },
     meals: []
   });
 
@@ -104,10 +125,9 @@ const EnhancedNutritionTrackerPage: React.FC = () => {
       carbs: food.carbs,
       fat: food.fat,
       fiber: food.fiber,
-      sugar: food.sugar,
       quantity: food.servingSize,
       mealType: selectedMeal,
-      timestamp: new Date().toISOString(),
+      timestamp: new Date(),
       imageUrl: uploadedImage || undefined
     };
 
@@ -336,12 +356,15 @@ const EnhancedNutritionTrackerPage: React.FC = () => {
                     key={index}
                     onClick={() => {
                       const mockAnalysis: FoodAnalysis = {
+                        foodName: food.name,
                         name: food.name,
                         calories: food.calories,
                         protein: food.protein,
                         carbs: food.carbs,
                         fat: food.fat,
+                        fiber: 3,
                         confidence: 95,
+                        description: 'Food item',
                         servingSize: '1 serving'
                       };
                       addFoodToMeal(mockAnalysis);

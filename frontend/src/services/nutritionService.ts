@@ -10,6 +10,7 @@ export interface Meal {
   fat: number;
   fiber: number;
   serving: string;
+  quantity?: string;
   confidence: number;
   mealType: string;
 }

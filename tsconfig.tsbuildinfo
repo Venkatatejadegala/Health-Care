@@ -1,0 +1,1 @@
+{"root":["./src/components/dashboardlayout.tsx","./src/components/header.tsx","./src/components/sidebar.tsx","./src/components/theme-provider.tsx","./src/components/ui/button.tsx","./src/components/ui/dropdown-menu.tsx","./src/components/ui/theme-toggle.tsx","./src/lib/utils.ts"],"errors":true,"version":"5.9.2"}

@@ -25,6 +25,7 @@ const EnhancedProfilePage: React.FC = () => {
     gender: 'male',
     activityLevel: 'moderate',
     goal: 'recomposition',
+    goals: ['recomposition'],
     dietaryRestrictions: []
   });
 
@@ -257,24 +258,24 @@ const EnhancedProfilePage: React.FC = () => {
                 <label
                   key={option}
                   className={`flex items-center p-3 rounded-lg border cursor-pointer transition-colors ${
-                    userProfile.dietaryRestrictions.includes(option)
+                    userProfile.dietaryRestrictions?.includes(option)
                       ? 'border-blue-500 bg-blue-50'
                       : 'border-gray-200 hover:border-gray-300'
                   }`}
                 >
                   <input
                     type="checkbox"
-                    checked={userProfile.dietaryRestrictions.includes(option)}
+                    checked={userProfile.dietaryRestrictions?.includes(option) || false}
                     onChange={(e) => {
                       if (e.target.checked) {
                         setUserProfile(prev => ({
                           ...prev,
-                          dietaryRestrictions: [...prev.dietaryRestrictions, option]
+                          dietaryRestrictions: [...(prev.dietaryRestrictions || []), option]
                         }));
                       } else {
                         setUserProfile(prev => ({
                           ...prev,
-                          dietaryRestrictions: prev.dietaryRestrictions.filter(item => item !== option)
+                          dietaryRestrictions: (prev.dietaryRestrictions || []).filter(item => item !== option)
                         }));
                       }
                     }}
