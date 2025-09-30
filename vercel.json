@@ -1,6 +1,5 @@
 {
   "version": 2,
-  "name": "health-hub",
   "builds": [
     {
       "src": "frontend/package.json",
@@ -12,22 +11,8 @@
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
-      "dest": "https://your-backend-url.herokuapp.com/api/$1"
-    },
-    {
       "src": "/(.*)",
       "dest": "/index.html"
     }
-  ],
-  "env": {
-    "VITE_API_URL": "@vite_api_url",
-    "VITE_ML_SERVICE_URL": "@vite_ml_service_url",
-    "VITE_GEMINI_API_KEY": "@vite_gemini_api_key"
-  },
-  "functions": {
-    "frontend/dist/**/*.js": {
-      "maxDuration": 30
-    }
-  }
+  ]
 }
