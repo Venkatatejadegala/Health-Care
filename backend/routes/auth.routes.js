@@ -1,12 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-// const db = require('../models');
-// const User = db.User;
-
-// In-memory storage for testing (replace with database later)
-const users = [];
+const User = require('../models/User.js');
 
 // Signup Route
 router.post('/signup', async (req, res) => {
@@ -14,27 +9,21 @@ router.post('/signup', async (req, res) => {
 
   try {
     // Check if user already exists
-    const existingUser = users.find(u => u.email === email || u.username === username);
+    const existingUser = await User.findOne({ $or: [{ email }, { username }] });
     if (existingUser) {
       return res.status(400).json({ message: 'Username or email already exists.' });
     }
 
-    // Hash password
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    // Create user object
-    const user = {
-      id: users.length + 1,
+    // Create user object in DB (password is hashed in pre-save hook)
+    const user = new User({
       username,
       email,
-      password: hashedPassword,
-      createdAt: new Date()
-    };
-
-    users.push(user);
+      password
+    });
+    await user.save();
 
     // Exclude password from the response
-    const userResponse = { ...user };
+    const userResponse = user.toObject();
     delete userResponse.password;
 
     res.status(201).json({ message: 'User registered successfully', user: userResponse });
@@ -49,22 +38,22 @@ router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const user = users.find(u => u.email === email);
+    const user = await User.findOne({ email });
 
     if (!user) {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await user.validPassword(password);
 
     if (!isMatch) {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
-    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET || 'fallback-secret', { expiresIn: '1h' });
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET || 'fallback-secret', { expiresIn: '1h' });
 
     // Exclude password from the response
-    const userResponse = { ...user };
+    const userResponse = user.toObject();
     delete userResponse.password;
 
     res.status(200).json({ message: 'Logged in successfully', token, user: userResponse });

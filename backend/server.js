@@ -3,7 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
-const db = require('./models');
+const mongoose = require('mongoose');
 const authRoutes = require('./routes/auth.routes');
 const userProfileRoutes = require('./routes/userProfile.routes');
 
@@ -108,16 +108,24 @@ process.on('SIGINT', () => {
   process.exit(0);
 });
 
-// Database synchronization
-db.sequelize.sync().then(() => {
-  // Start server
-  app.listen(PORT, () => {
-    console.log(`🚀 Health Hub API server running on port ${PORT}`);
-    console.log(`📊 Health check: http://localhost:${PORT}/health`);
-    console.log(`📚 API docs: http://localhost:${PORT}/api/docs`);
-    console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
+// Database connection
+const MONGODB_URI = process.env.MONGODB_URI;
+
+if (!MONGODB_URI) {
+  console.error('❌ MONGODB_URI is not defined in environment variables. Please add it to your .env file.');
+  process.exit(1);
+}
+
+mongoose.connect(MONGODB_URI)
+  .then(() => {
     console.log('✅ Database connected successfully');
+    app.listen(PORT, () => {
+      console.log(`🚀 Health Hub API server running on port ${PORT}`);
+      console.log(`📊 Health check: http://localhost:${PORT}/health`);
+      console.log(`📚 API docs: http://localhost:${PORT}/api/docs`);
+      console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
+    });
+  })
+  .catch((err) => {
+    console.error('❌ Unable to connect to the database:', err);
   });
-}).catch(err => {
-  console.error('❌ Unable to connect to the database:', err);
-});

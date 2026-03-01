@@ -1,11 +1,7 @@
 const express = require('express');
 const router = express.Router();
-// const db = require('../models');
-// const UserProfile = db.UserProfile;
 const jwt = require('jsonwebtoken');
-
-// In-memory storage for testing (replace with database later)
-const userProfiles = [];
+const UserProfile = require('../models/UserProfile.js');
 
 // Middleware to protect routes
 const authenticateToken = (req, res, next) => {
@@ -61,22 +57,21 @@ router.post('/', authenticateToken, async (req, res) => {
 
   try {
     // Find existing profile or create new one
-    let userProfile = userProfiles.find(p => p.userId === userId);
-    
+    let userProfile = await UserProfile.findOne({ userId });
+
     if (userProfile) {
       // Update existing profile
       Object.assign(userProfile, {
         name, age, sex, height, weight, activityLevel, goal, bmr, tdee, calorieTarget, proteinTarget, carbsTarget, fatsTarget
       });
+      await userProfile.save();
     } else {
       // Create new profile
-      userProfile = {
-        id: userProfiles.length + 1,
+      userProfile = new UserProfile({
         userId,
-        name, age, sex, height, weight, activityLevel, goal, bmr, tdee, calorieTarget, proteinTarget, carbsTarget, fatsTarget,
-        createdAt: new Date()
-      };
-      userProfiles.push(userProfile);
+        name, age, sex, height, weight, activityLevel, goal, bmr, tdee, calorieTarget, proteinTarget, carbsTarget, fatsTarget
+      });
+      await userProfile.save();
     }
 
     res.status(200).json({ message: 'User profile saved successfully', userProfile });
@@ -91,7 +86,7 @@ router.get('/', authenticateToken, async (req, res) => {
   const userId = req.user.id;
 
   try {
-    const userProfile = userProfiles.find(p => p.userId === userId);
+    const userProfile = await UserProfile.findOne({ userId });
 
     if (!userProfile) {
       return res.status(404).json({ message: 'User profile not found' });
