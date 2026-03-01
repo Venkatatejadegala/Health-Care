@@ -151,9 +151,8 @@ curl http://localhost:5000/health
 #### **Problem**: Database connection issues
 **Solutions**:
 ```bash
-# Check if MySQL is running
-# Start MySQL service or use Docker
-docker-compose up mysql_db
+# Check your MongoDB Atlas connection string in backend/.env
+# Verify that your IP address is whitelisted in MongoDB Atlas Network Access
 ```
 
 ### 🤖 **ML Service Issues**

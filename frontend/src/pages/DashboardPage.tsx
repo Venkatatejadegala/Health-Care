@@ -5,7 +5,6 @@ import AIRecommendationsCard from '../components/dashboard/cards/AIRecommendatio
 import HealthInsightsCard from '../components/dashboard/cards/HealthInsightsCard';
 import RecentActivityCard from '../components/dashboard/cards/RecentActivityCard';
 import HealthTipsCard from '../components/dashboard/cards/HealthTipsCard';
-import NutritionTrackerCard from '../components/dashboard/cards/NutritionTrackerCard';
 
 const DashboardPage: React.FC = () => {
   return (
