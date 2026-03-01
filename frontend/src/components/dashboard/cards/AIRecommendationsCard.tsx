@@ -51,79 +51,33 @@ const AIRecommendationsCard: React.FC = () => {
   };
 
   return (
-    <div style={{
-      backgroundColor: 'white',
-      borderRadius: '0.75rem',
-      padding: '1.5rem',
-      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-      border: '1px solid #e5e7eb',
-      height: '100%'
-    }}>
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginBottom: '1.5rem'
-      }}>
-        <h3 style={{
-          fontSize: '1.25rem',
-          fontWeight: 'bold',
-          color: '#1f2937',
-          margin: 0
-        }}>
+    <div className="glass-panel p-6 h-full flex flex-col relative overflow-hidden group">
+      <div className="absolute -top-10 -right-10 w-48 h-48 bg-blue-100 rounded-full blur-3xl opacity-40 group-hover:opacity-60 transition-opacity duration-500"></div>
+
+      <div className="flex items-center justify-between mb-6 relative z-10">
+        <h3 className="text-xl font-extrabold text-gray-800 m-0">
           🤖 AI Recommendations
         </h3>
-        <div style={{
-          backgroundColor: '#dbeafe',
-          color: '#1e40af',
-          padding: '0.25rem 0.75rem',
-          borderRadius: '9999px',
-          fontSize: '0.75rem',
-          fontWeight: '500'
-        }}>
+        <div className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-bold shadow-sm whitespace-nowrap">
           🤖 Real AI Powered
         </div>
       </div>
 
       {error && (
-        <div style={{
-          backgroundColor: '#fef2f2',
-          border: '1px solid #fecaca',
-          color: '#dc2626',
-          padding: '0.75rem',
-          borderRadius: '0.5rem',
-          marginBottom: '1rem',
-          fontSize: '0.875rem'
-        }}>
+        <div className="bg-red-50 border border-red-200 text-red-600 p-3 rounded-lg mb-4 text-sm font-medium relative z-10">
           {error}
         </div>
       )}
 
       {recommendations.length === 0 && !isLoading && (
-        <div style={{
-          textAlign: 'center',
-          padding: '2rem',
-          color: '#6b7280'
-        }}>
-          <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🤖</div>
-          <p style={{ margin: '0 0 1rem 0', fontSize: '1rem' }}>
+        <div className="text-center p-8 text-gray-500 relative z-10 flex flex-col items-center flex-grow justify-center">
+          <div className="text-5xl mb-4 opacity-50">🤖</div>
+          <p className="m-0 mb-6 text-base font-medium max-w-xs leading-relaxed">
             Get personalized health recommendations powered by AI
           </p>
           <button
             onClick={generateRecommendations}
-            style={{
-              backgroundColor: '#3b82f6',
-              color: 'white',
-              border: 'none',
-              borderRadius: '0.5rem',
-              padding: '0.75rem 1.5rem',
-              cursor: 'pointer',
-              fontSize: '0.875rem',
-              fontWeight: '500',
-              transition: 'background-color 0.2s'
-            }}
-            onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#2563eb'}
-            onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#3b82f6'}
+            className="w-full sm:w-auto bg-gradient-to-r from-primary-500 to-purple-600 hover:from-primary-600 hover:to-purple-700 text-white px-6 py-3 rounded-xl font-bold transition-all shadow-md hover:shadow-lg active:scale-95"
           >
             Generate Recommendations
           </button>
@@ -131,101 +85,35 @@ const AIRecommendationsCard: React.FC = () => {
       )}
 
       {isLoading && (
-        <div style={{
-          textAlign: 'center',
-          padding: '2rem',
-          color: '#6b7280'
-        }}>
-          <div style={{
-            width: '40px',
-            height: '40px',
-            border: '4px solid #e5e7eb',
-            borderTop: '4px solid #3b82f6',
-            borderRadius: '50%',
-            animation: 'spin 1s linear infinite',
-            margin: '0 auto 1rem'
-          }} />
-          <p style={{ margin: 0 }}>AI is analyzing your profile...</p>
+        <div className="text-center p-8 text-gray-500 relative z-10 flex flex-col items-center flex-grow justify-center">
+          <div className="w-10 h-10 border-4 border-gray-200 border-t-primary-500 rounded-full animate-spin mx-auto mb-4" />
+          <p className="m-0 font-medium animate-pulse">AI is analyzing your profile...</p>
         </div>
       )}
 
       {recommendations.length > 0 && (
-        <div style={{ 
-          display: 'flex', 
-          flexDirection: 'column', 
-          gap: '1rem',
-          maxHeight: '400px',
-          overflowY: 'auto'
-        }}>
+        <div className="flex flex-col gap-3 overflow-y-auto pr-1 relative z-10 flex-grow" style={{ maxHeight: '400px' }}>
           {recommendations.map((rec, index) => (
             <div
               key={index}
-              style={{
-                display: 'flex',
-                alignItems: 'flex-start',
-                padding: '1rem',
-                backgroundColor: '#f9fafb',
-                borderRadius: '0.5rem',
-                border: '1px solid #e5e7eb',
-                transition: 'all 0.2s',
-                cursor: 'pointer'
-              }}
-              onMouseOver={(e) => {
-                e.currentTarget.style.backgroundColor = '#f3f4f6';
-                e.currentTarget.style.borderColor = '#d1d5db';
-              }}
-              onMouseOut={(e) => {
-                e.currentTarget.style.backgroundColor = '#f9fafb';
-                e.currentTarget.style.borderColor = '#e5e7eb';
-              }}
+              className="flex items-start p-4 bg-white bg-opacity-60 backdrop-blur-sm rounded-xl border border-white border-opacity-40 transition-all duration-300 shadow-sm hover:shadow hover:bg-opacity-80 group/rec"
             >
-              <div style={{
-                width: '40px',
-                height: '40px',
-                backgroundColor: '#3b82f6',
-                borderRadius: '50%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '1.25rem',
-                marginRight: '0.75rem',
-                flexShrink: 0
-              }}>
+              <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-2xl mr-4 flex-shrink-0 shadow-sm transition-transform duration-300 group-hover/rec:scale-110">
                 {getCategoryIcon(rec.category)}
               </div>
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  marginBottom: '0.25rem'
-                }}>
-                  <h4 style={{
-                    fontSize: '0.875rem',
-                    fontWeight: '600',
-                    color: '#1f2937',
-                    margin: 0
-                  }}>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center justify-between mb-1.5">
+                  <h4 className="text-sm font-bold text-gray-800 m-0 truncate pr-2">
                     {rec.title}
                   </h4>
-                  <div style={{
-                    backgroundColor: getPriorityColor(rec.priority),
-                    color: 'white',
-                    padding: '0.125rem 0.5rem',
-                    borderRadius: '9999px',
-                    fontSize: '0.625rem',
-                    fontWeight: '500',
-                    textTransform: 'uppercase'
-                  }}>
+                  <div
+                    className="px-2 py-0.5 rounded-full text-[10px] font-bold text-white uppercase tracking-wider shadow-sm flex-shrink-0"
+                    style={{ backgroundColor: getPriorityColor(rec.priority) }}
+                  >
                     {rec.priority}
                   </div>
                 </div>
-                <p style={{
-                  fontSize: '0.75rem',
-                  color: '#6b7280',
-                  margin: 0,
-                  lineHeight: '1.4'
-                }}>
+                <p className="text-xs text-gray-600 m-0 leading-relaxed font-medium">
                   {rec.description}
                 </p>
               </div>
@@ -235,33 +123,14 @@ const AIRecommendationsCard: React.FC = () => {
       )}
 
       {recommendations.length > 0 && (
-        <div style={{ marginTop: '1rem', textAlign: 'center' }}>
+        <div className="mt-4 text-center relative z-10">
           <button
             onClick={generateRecommendations}
             disabled={isLoading}
-            style={{
-              backgroundColor: '#f3f4f6',
-              color: '#374151',
-              border: '1px solid #d1d5db',
-              borderRadius: '0.5rem',
-              padding: '0.5rem 1rem',
-              cursor: isLoading ? 'not-allowed' : 'pointer',
-              fontSize: '0.875rem',
-              fontWeight: '500',
-              transition: 'all 0.2s'
-            }}
-            onMouseOver={(e) => {
-              if (!isLoading) {
-                e.currentTarget.style.backgroundColor = '#e5e7eb';
-                e.currentTarget.style.borderColor = '#9ca3af';
-              }
-            }}
-            onMouseOut={(e) => {
-              if (!isLoading) {
-                e.currentTarget.style.backgroundColor = '#f3f4f6';
-                e.currentTarget.style.borderColor = '#d1d5db';
-              }
-            }}
+            className={`w-full py-3 rounded-xl font-bold transition-all border shadow-sm ${isLoading
+                ? 'bg-gray-50 text-gray-400 border-gray-200 cursor-not-allowed'
+                : 'bg-white bg-opacity-80 text-primary-600 border-primary-100 hover:bg-primary-50 hover:border-primary-200 active:scale-95'
+              }`}
           >
             🔄 Generate New Recommendations
           </button>

@@ -3,7 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
-// const db = require('./models');
+const db = require('./models');
 const authRoutes = require('./routes/auth.routes');
 const userProfileRoutes = require('./routes/userProfile.routes');
 
@@ -83,14 +83,14 @@ app.use((req, res) => {
 // Global error handler
 app.use((err, req, res, next) => {
   console.error('Error:', err);
-  
+
   if (err.type === 'entity.parse.failed') {
     return res.status(400).json({
       error: 'Invalid JSON',
       message: 'Request body contains invalid JSON'
     });
   }
-  
+
   res.status(err.status || 500).json({
     error: err.message || 'Internal Server Error',
     ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
@@ -108,20 +108,16 @@ process.on('SIGINT', () => {
   process.exit(0);
 });
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`🚀 Health Hub API server running on port ${PORT}`);
-  console.log(`📊 Health check: http://localhost:${PORT}/health`);
-  console.log(`📚 API docs: http://localhost:${PORT}/api/docs`);
-  console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
-  console.log('Note: Database connection disabled for testing');
+// Database synchronization
+db.sequelize.sync().then(() => {
+  // Start server
+  app.listen(PORT, () => {
+    console.log(`🚀 Health Hub API server running on port ${PORT}`);
+    console.log(`📊 Health check: http://localhost:${PORT}/health`);
+    console.log(`📚 API docs: http://localhost:${PORT}/api/docs`);
+    console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
+    console.log('✅ Database connected successfully');
+  });
+}).catch(err => {
+  console.error('❌ Unable to connect to the database:', err);
 });
-
-// Database synchronization - commented out for now
-// db.sequelize.sync().then(() => {
-//   app.listen(PORT, () => {
-//     console.log(`Server running on port ${PORT}`);
-//   });
-// }).catch(err => {
-//   console.error('Unable to connect to the database:', err);
-// });

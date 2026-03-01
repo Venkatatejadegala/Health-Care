@@ -83,14 +83,14 @@ const HealthMetricsCard: React.FC = () => {
     setIsLoading(true);
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1000));
-    
+
     // Update metrics with some variation
     setMetrics(prev => prev.map(metric => ({
       ...metric,
       value: metric.value + (Math.random() - 0.5) * metric.value * 0.1,
       trend: ['up', 'down', 'stable'][Math.floor(Math.random() * 3)] as 'up' | 'down' | 'stable'
     })));
-    
+
     setIsLoading(false);
   };
 
@@ -99,204 +99,89 @@ const HealthMetricsCard: React.FC = () => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      style={{
-        backgroundColor: 'white',
-        borderRadius: '1rem',
-        padding: '1.5rem',
-        boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
-        border: '1px solid #e5e7eb',
-        height: '100%'
-      }}
+      className="glass-panel p-6 h-full flex flex-col"
     >
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginBottom: '1.5rem'
-      }}>
-        <h3 style={{
-          fontSize: '1.25rem',
-          fontWeight: 'bold',
-          color: '#1f2937',
-          margin: 0,
-          display: 'flex',
-          alignItems: 'center',
-          gap: '0.5rem'
-        }}>
+      <div className="flex items-center justify-between mb-6">
+        <h3 className="text-xl font-extrabold text-gray-800 m-0 flex items-center gap-2">
           📊 Health Metrics
         </h3>
         <button
           onClick={refreshMetrics}
           disabled={isLoading}
-          style={{
-            backgroundColor: '#f3f4f6',
-            border: '1px solid #d1d5db',
-            borderRadius: '0.5rem',
-            padding: '0.5rem',
-            cursor: isLoading ? 'not-allowed' : 'pointer',
-            transition: 'all 0.2s',
-            opacity: isLoading ? 0.6 : 1
-          }}
-          onMouseOver={(e) => {
-            if (!isLoading) {
-              e.currentTarget.style.backgroundColor = '#e5e7eb';
-            }
-          }}
-          onMouseOut={(e) => {
-            if (!isLoading) {
-              e.currentTarget.style.backgroundColor = '#f3f4f6';
-            }
-          }}
+          className={`p-2 rounded-lg transition-all duration-300 ${isLoading ? 'opacity-60 cursor-not-allowed bg-gray-100' : 'bg-gray-50 hover:bg-gray-200 border border-gray-200 shadow-sm hover:shadow active:scale-95'}`}
         >
           {isLoading ? '⏳' : '🔄'}
         </button>
       </div>
 
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-        gap: '1rem'
-      }}>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 flex-grow">
         {metrics.map((metric, index) => (
           <motion.div
             key={metric.id}
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.3, delay: index * 0.1 }}
-            style={{
-              backgroundColor: '#f9fafb',
-              borderRadius: '0.75rem',
-              padding: '1rem',
-              border: '1px solid #e5e7eb',
-              transition: 'all 0.2s',
-              cursor: 'pointer'
-            }}
-            whileHover={{ scale: 1.02 }}
+            className="bg-white bg-opacity-60 backdrop-blur-sm rounded-xl p-4 border border-white border-opacity-40 transition-all duration-300 cursor-pointer shadow-sm hover:shadow-md"
+            whileHover={{ scale: 1.03, translateY: -2 }}
             whileTap={{ scale: 0.98 }}
           >
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              marginBottom: '0.75rem'
-            }}>
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.5rem'
-              }}>
-                <span style={{ fontSize: '1.5rem' }}>{metric.icon}</span>
-                <span style={{
-                  fontSize: '0.875rem',
-                  fontWeight: '500',
-                  color: '#374151'
-                }}>
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-2">
+                <span className="text-2xl">{metric.icon}</span>
+                <span className="text-sm font-semibold text-gray-700">
                   {metric.name}
                 </span>
               </div>
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.25rem',
-                color: getTrendColor(metric.trend),
-                fontSize: '0.75rem'
-              }}>
+              <div
+                className="flex items-center gap-1 text-xs"
+                style={{ color: getTrendColor(metric.trend) }}
+              >
                 <span>{getTrendIcon(metric.trend)}</span>
               </div>
             </div>
 
-            <div style={{
-              display: 'flex',
-              alignItems: 'baseline',
-              gap: '0.25rem',
-              marginBottom: '0.5rem'
-            }}>
-              <span style={{
-                fontSize: '1.5rem',
-                fontWeight: 'bold',
-                color: metric.color
-              }}>
+            <div className="flex items-baseline gap-1 mb-2">
+              <span
+                className="text-2xl font-black"
+                style={{ color: metric.color }}
+              >
                 {metric.value.toFixed(metric.unit === 'L' ? 1 : 0)}
               </span>
-              <span style={{
-                fontSize: '0.875rem',
-                color: '#6b7280'
-              }}>
+              <span className="text-sm font-medium text-gray-500">
                 {metric.unit}
               </span>
             </div>
 
-            <div style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              marginBottom: '0.5rem'
-            }}>
-              <span style={{
-                fontSize: '0.75rem',
-                color: '#6b7280'
-              }}>
+            <div className="flex justify-between items-center mb-2">
+              <span className="text-xs font-medium text-gray-500">
                 Target: {metric.target} {metric.unit}
               </span>
-              <span style={{
-                fontSize: '0.75rem',
-                fontWeight: '500',
-                color: '#374151'
-              }}>
+              <span className="text-xs font-bold text-gray-700">
                 {getProgressPercentage(metric.value, metric.target).toFixed(0)}%
               </span>
             </div>
 
-            <div style={{
-              width: '100%',
-              height: '6px',
-              backgroundColor: '#e5e7eb',
-              borderRadius: '3px',
-              overflow: 'hidden'
-            }}>
+            <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden shadow-inner">
               <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: `${getProgressPercentage(metric.value, metric.target)}%` }}
-                transition={{ duration: 1, delay: index * 0.1 }}
-                style={{
-                  height: '100%',
-                  backgroundColor: metric.color,
-                  borderRadius: '3px'
-                }}
+                transition={{ duration: 1, delay: index * 0.1, type: "spring" }}
+                className="h-full rounded-full"
+                style={{ backgroundColor: metric.color }}
               />
             </div>
           </motion.div>
         ))}
       </div>
 
-      <div style={{
-        marginTop: '1.5rem',
-        padding: '1rem',
-        backgroundColor: '#f0f9ff',
-        borderRadius: '0.5rem',
-        border: '1px solid #bae6fd'
-      }}>
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '0.5rem',
-          marginBottom: '0.5rem'
-        }}>
-          <span style={{ fontSize: '1rem' }}>💡</span>
-          <span style={{
-            fontSize: '0.875rem',
-            fontWeight: '500',
-            color: '#1e40af'
-          }}>
+      <div className="mt-6 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-100 shadow-sm">
+        <div className="flex items-center gap-2 mb-2">
+          <span className="text-lg">💡</span>
+          <span className="text-sm font-bold text-blue-800">
             Today's Insight
           </span>
         </div>
-        <p style={{
-          fontSize: '0.75rem',
-          color: '#1e40af',
-          margin: 0,
-          lineHeight: '1.4'
-        }}>
+        <p className="text-xs text-blue-900 m-0 leading-relaxed font-medium">
           You're doing great with your daily steps! Try to increase your water intake to reach your hydration goal.
         </p>
       </div>

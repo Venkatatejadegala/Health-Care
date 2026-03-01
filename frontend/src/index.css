@@ -16,41 +16,65 @@
 
 @layer components {
   .btn-primary {
-    background-color: #2563eb;
+    background: linear-gradient(135deg, #2563eb 0%, #4f46e5 100%);
     color: white;
     font-weight: 600;
     padding: 0.75rem 1.5rem;
     border-radius: 0.75rem;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     transform: scale(1);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 14px 0 rgba(37, 99, 235, 0.39);
   }
   
   .btn-primary:hover {
-    background-color: #1d4ed8;
-    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+    transform: translateY(-2px) scale(1.02);
   }
   
   .btn-secondary {
-    background-color: #f3f4f6;
+    background-color: rgba(243, 244, 246, 0.8);
+    backdrop-filter: blur(8px);
     color: #374151;
     font-weight: 600;
     padding: 0.75rem 1.5rem;
     border-radius: 0.75rem;
-    transition: all 0.3s ease;
-    transform: scale(1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(255, 255, 255, 0.5);
   }
   
   .btn-secondary:hover {
-    background-color: #e5e7eb;
-    transform: scale(1.05);
+    background-color: rgba(229, 231, 235, 0.9);
+    transform: translateY(-2px);
   }
   
   .gradient-text {
-    background: linear-gradient(to right, #2563eb, #9333ea);
+    background: linear-gradient(to right, #2563eb, #8b5cf6, #ec4899);
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent;
+    background-size: 200% auto;
+    animation: textGradient 4s linear infinite;
+  }
+
+  .glass-panel {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+    border-radius: 1rem;
+  }
+  
+  .dark .glass-panel {
+    background: rgba(17, 24, 39, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  }
+}
+
+@keyframes textGradient {
+  to {
+    background-position: 200% center;
   }
 }
 

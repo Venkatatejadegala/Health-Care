@@ -63,169 +63,67 @@ const HealthTipsCard: React.FC = () => {
     }
   ];
 
-  const filteredTips = selectedCategory === 'all' 
-    ? tips 
+  const filteredTips = selectedCategory === 'all'
+    ? tips
     : tips.filter(tip => tip.category === selectedCategory);
 
   return (
-    <div style={{
-      backgroundColor: 'white',
-      borderRadius: '0.75rem',
-      padding: '1.5rem',
-      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-      border: '1px solid #e5e7eb',
-      height: '100%'
-    }}>
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginBottom: '1.5rem'
-      }}>
-        <h3 style={{
-          fontSize: '1.25rem',
-          fontWeight: 'bold',
-          color: '#1f2937',
-          margin: 0
-        }}>
+    <div className="glass-panel p-6 h-full flex flex-col relative overflow-hidden group">
+      <div className="absolute -left-10 -bottom-10 w-40 h-40 bg-purple-100 rounded-full blur-3xl opacity-50 group-hover:opacity-70 transition-opacity duration-500"></div>
+
+      <div className="flex items-center justify-between mb-6 relative z-10">
+        <h3 className="text-xl font-extrabold text-gray-800 m-0">
           Health Tips
         </h3>
         <button
-          style={{
-            backgroundColor: '#f3f4f6',
-            border: 'none',
-            borderRadius: '0.375rem',
-            padding: '0.5rem',
-            cursor: 'pointer',
-            fontSize: '1rem',
-            color: '#6b7280',
-            transition: 'background-color 0.2s'
+          onClick={() => {
+            // Optional: Add a shuffle or refresh animation logic here
           }}
-          onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#e5e7eb'}
-          onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#f3f4f6'}
+          className="text-sm font-semibold text-primary-600 hover:text-primary-700 bg-primary-50 hover:bg-primary-100 px-3 py-1.5 rounded-lg transition-colors border border-primary-100 shadow-sm flex items-center gap-1"
         >
-          🔄 Refresh
+          <span>🔄</span> Refresh
         </button>
       </div>
 
       {/* Category Filter */}
-      <div style={{
-        display: 'flex',
-        gap: '0.5rem',
-        marginBottom: '1.5rem',
-        overflowX: 'auto',
-        paddingBottom: '0.5rem'
-      }}>
+      <div className="flex gap-2 mb-4 overflow-x-auto pb-2 scrollbar-hide relative z-10">
         {categories.map((category) => (
           <button
             key={category.id}
             onClick={() => setSelectedCategory(category.id)}
-            style={{
-              backgroundColor: selectedCategory === category.id ? '#3b82f6' : '#f3f4f6',
-              color: selectedCategory === category.id ? 'white' : '#374151',
-              border: 'none',
-              borderRadius: '9999px',
-              padding: '0.5rem 1rem',
-              cursor: 'pointer',
-              fontSize: '0.875rem',
-              fontWeight: '500',
-              whiteSpace: 'nowrap',
-              transition: 'all 0.2s',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.25rem'
-            }}
-            onMouseOver={(e) => {
-              if (selectedCategory !== category.id) {
-                e.currentTarget.style.backgroundColor = '#e5e7eb';
-              }
-            }}
-            onMouseOut={(e) => {
-              if (selectedCategory !== category.id) {
-                e.currentTarget.style.backgroundColor = '#f3f4f6';
-              }
-            }}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-semibold whitespace-nowrap transition-all duration-300 ${selectedCategory === category.id
+              ? 'bg-primary-600 text-white shadow-md'
+              : 'bg-white bg-opacity-60 text-gray-600 hover:bg-gray-100 hover:text-gray-900 border border-gray-100 shadow-sm'
+              }`}
           >
-            <span>{category.icon}</span>
+            <span className="text-base">{category.icon}</span>
             {category.label}
           </button>
         ))}
       </div>
 
       {/* Tips List */}
-      <div style={{ 
-        display: 'flex', 
-        flexDirection: 'column', 
-        gap: '1rem',
-        maxHeight: '400px',
-        overflowY: 'auto'
-      }}>
+      <div className="flex flex-col gap-3 overflow-y-auto pr-1 flex-grow relative z-10" style={{ maxHeight: '400px' }}>
         {filteredTips.map((tip) => (
           <div
             key={tip.id}
-            style={{
-              display: 'flex',
-              alignItems: 'flex-start',
-              padding: '1rem',
-              backgroundColor: '#f9fafb',
-              borderRadius: '0.5rem',
-              border: '1px solid #e5e7eb',
-              transition: 'all 0.2s',
-              cursor: 'pointer'
-            }}
-            onMouseOver={(e) => {
-              e.currentTarget.style.backgroundColor = '#f3f4f6';
-              e.currentTarget.style.borderColor = '#d1d5db';
-            }}
-            onMouseOut={(e) => {
-              e.currentTarget.style.backgroundColor = '#f9fafb';
-              e.currentTarget.style.borderColor = '#e5e7eb';
-            }}
+            className="flex items-start p-4 bg-white bg-opacity-60 backdrop-blur-sm rounded-xl border border-white border-opacity-40 transition-all duration-300 cursor-pointer shadow-sm hover:shadow hover:bg-opacity-80 group/tip"
           >
-            <div style={{
-              width: '40px',
-              height: '40px',
-              backgroundColor: tip.color,
-              borderRadius: '50%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: '1.25rem',
-              marginRight: '0.75rem',
-              flexShrink: 0
-            }}>
+            <div
+              className="w-12 h-12 rounded-full flex items-center justify-center text-2xl mr-4 flex-shrink-0 shadow-sm bg-opacity-20 transition-transform duration-300 group-hover/tip:scale-110"
+              style={{ backgroundColor: `${tip.color}20`, color: tip.color }}
+            >
               {tip.icon}
             </div>
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <h4 style={{
-                fontSize: '0.875rem',
-                fontWeight: '600',
-                color: '#1f2937',
-                margin: '0 0 0.25rem 0'
-              }}>
+            <div className="flex-1 min-w-0">
+              <h4 className="text-sm font-bold text-gray-800 m-0 mb-1">
                 {tip.title}
               </h4>
-              <p style={{
-                fontSize: '0.75rem',
-                color: '#6b7280',
-                margin: 0,
-                lineHeight: '1.4'
-              }}>
+              <p className="text-xs text-gray-500 m-0 leading-relaxed font-medium">
                 {tip.description}
               </p>
             </div>
-            <button
-              style={{
-                backgroundColor: 'transparent',
-                border: 'none',
-                cursor: 'pointer',
-                fontSize: '1rem',
-                color: '#9ca3af',
-                padding: '0.25rem',
-                marginLeft: '0.5rem',
-                flexShrink: 0
-              }}
-            >
+            <button className="text-gray-300 hover:text-red-500 transition-colors ml-2 bg-transparent border-none cursor-pointer p-1 active:scale-90 text-lg">
               ❤️
             </button>
           </div>
@@ -233,12 +131,8 @@ const HealthTipsCard: React.FC = () => {
       </div>
 
       {filteredTips.length === 0 && (
-        <div style={{
-          textAlign: 'center',
-          padding: '2rem',
-          color: '#6b7280'
-        }}>
-          <p style={{ margin: 0 }}>No tips available for this category.</p>
+        <div className="text-center p-8 text-gray-500 bg-gray-50 bg-opacity-50 rounded-xl border border-dashed border-gray-300">
+          <p className="m-0 text-sm font-medium">No tips available for this category.</p>
         </div>
       )}
     </div>

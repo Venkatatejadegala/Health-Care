@@ -41,99 +41,41 @@ const RecentActivityCard: React.FC = () => {
   ];
 
   return (
-    <div style={{
-      backgroundColor: 'white',
-      borderRadius: '0.75rem',
-      padding: '1.5rem',
-      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-      border: '1px solid #e5e7eb',
-      height: '100%'
-    }}>
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginBottom: '1.5rem'
-      }}>
-        <h3 style={{
-          fontSize: '1.25rem',
-          fontWeight: 'bold',
-          color: '#1f2937',
-          margin: 0
-        }}>
+    <div className="glass-panel p-6 h-full flex flex-col relative overflow-hidden group">
+      <div className="absolute -right-10 -top-10 w-32 h-32 bg-primary-100 rounded-full blur-3xl opacity-50 group-hover:opacity-70 transition-opacity duration-500"></div>
+
+      <div className="flex items-center justify-between mb-6 relative z-10">
+        <h3 className="text-xl font-extrabold text-gray-800 m-0">
           Recent Activity
         </h3>
         <button
-          style={{
-            backgroundColor: '#f3f4f6',
-            border: 'none',
-            borderRadius: '0.375rem',
-            padding: '0.5rem',
-            cursor: 'pointer',
-            fontSize: '1rem',
-            color: '#6b7280',
-            transition: 'background-color 0.2s'
-          }}
-          onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#e5e7eb'}
-          onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#f3f4f6'}
+          className="text-sm font-semibold text-primary-600 hover:text-primary-700 bg-primary-50 hover:bg-primary-100 px-3 py-1.5 rounded-lg transition-colors border border-primary-100 shadow-sm"
         >
           View All
         </button>
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+      <div className="flex flex-col gap-3 relative z-10">
         {activities.map((activity) => (
           <div
             key={activity.id}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              padding: '0.75rem',
-              backgroundColor: '#f9fafb',
-              borderRadius: '0.5rem',
-              transition: 'background-color 0.2s',
-              cursor: 'pointer'
-            }}
-            onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#f3f4f6'}
-            onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#f9fafb'}
+            className="flex items-center p-3 bg-white bg-opacity-60 backdrop-blur-sm rounded-xl border border-white border-opacity-40 transition-all duration-300 cursor-pointer shadow-sm hover:shadow hover:bg-opacity-80 group/item"
           >
-            <div style={{
-              width: '40px',
-              height: '40px',
-              backgroundColor: activity.color,
-              borderRadius: '50%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: '1.25rem',
-              marginRight: '0.75rem',
-              flexShrink: 0
-            }}>
+            <div
+              className="w-10 h-10 rounded-full flex items-center justify-center text-xl mr-3 flex-shrink-0 shadow-sm bg-opacity-20 transition-transform duration-300 group-hover/item:scale-110"
+              style={{ backgroundColor: `${activity.color}20`, color: activity.color }}
+            >
               {activity.icon}
             </div>
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <p style={{
-                fontSize: '0.875rem',
-                fontWeight: '600',
-                color: '#1f2937',
-                margin: '0 0 0.25rem 0'
-              }}>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-bold text-gray-800 m-0 mb-0.5 truncate">
                 {activity.title}
               </p>
-              <p style={{
-                fontSize: '0.75rem',
-                color: '#6b7280',
-                margin: 0
-              }}>
+              <p className="text-xs text-gray-500 m-0 truncate font-medium">
                 {activity.description}
               </p>
             </div>
-            <span style={{
-              fontSize: '0.75rem',
-              color: '#9ca3af',
-              flexShrink: 0,
-              marginLeft: '0.5rem'
-            }}>
+            <span className="text-xs font-semibold text-gray-400 flex-shrink-0 ml-2 bg-gray-50 px-2 py-1 rounded-md border border-gray-100">
               {activity.time}
             </span>
           </div>

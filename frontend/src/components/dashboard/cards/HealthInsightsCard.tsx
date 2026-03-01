@@ -31,10 +31,10 @@ const HealthInsightsCard: React.FC = () => {
 
   const generateInsights = async () => {
     setIsLoading(true);
-    
+
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1500));
-    
+
     const mockInsights: HealthInsight[] = [
       {
         id: '1',
@@ -109,7 +109,7 @@ const HealthInsightsCard: React.FC = () => {
         timestamp: new Date(Date.now() - 12 * 60 * 60 * 1000).toISOString()
       }
     ];
-    
+
     setInsights(mockInsights);
     setIsLoading(false);
   };
@@ -152,14 +152,14 @@ const HealthInsightsCard: React.FC = () => {
     const date = new Date(timestamp);
     const now = new Date();
     const diffHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
-    
+
     if (diffHours < 1) return 'Just now';
     if (diffHours < 24) return `${diffHours}h ago`;
     return `${Math.floor(diffHours / 24)}d ago`;
   };
 
-  const filteredInsights = selectedCategory === 'all' 
-    ? insights 
+  const filteredInsights = selectedCategory === 'all'
+    ? insights
     : insights.filter(insight => insight.category === selectedCategory);
 
   return (
@@ -167,226 +167,104 @@ const HealthInsightsCard: React.FC = () => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      style={{
-        backgroundColor: 'white',
-        borderRadius: '1rem',
-        padding: '1.5rem',
-        boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
-        border: '1px solid #e5e7eb',
-        height: '100%'
-      }}
+      className="glass-panel p-6 h-full flex flex-col relative overflow-hidden group"
     >
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginBottom: '1.5rem'
-      }}>
-        <h3 style={{
-          fontSize: '1.25rem',
-          fontWeight: 'bold',
-          color: '#1f2937',
-          margin: 0,
-          display: 'flex',
-          alignItems: 'center',
-          gap: '0.5rem'
-        }}>
+      <div className="absolute -bottom-10 -right-10 w-48 h-48 bg-purple-100 rounded-full blur-3xl opacity-40 group-hover:opacity-60 transition-opacity duration-500 pointer-events-none"></div>
+
+      <div className="flex items-center justify-between mb-6 relative z-10">
+        <h3 className="text-xl font-extrabold text-gray-800 m-0 flex items-center gap-2">
           🧠 Health Insights
         </h3>
         <button
           onClick={generateInsights}
           disabled={isLoading}
-          style={{
-            backgroundColor: '#f3f4f6',
-            border: '1px solid #d1d5db',
-            borderRadius: '0.5rem',
-            padding: '0.5rem',
-            cursor: isLoading ? 'not-allowed' : 'pointer',
-            transition: 'all 0.2s',
-            opacity: isLoading ? 0.6 : 1
-          }}
-          onMouseOver={(e) => {
-            if (!isLoading) {
-              e.currentTarget.style.backgroundColor = '#e5e7eb';
-            }
-          }}
-          onMouseOut={(e) => {
-            if (!isLoading) {
-              e.currentTarget.style.backgroundColor = '#f3f4f6';
-            }
-          }}
+          className={`p-2 rounded-lg transition-all border shadow-sm ${isLoading
+              ? 'bg-gray-50 text-gray-400 border-gray-200 cursor-not-allowed opacity-60'
+              : 'bg-white bg-opacity-80 text-primary-600 border-primary-100 hover:bg-primary-50 hover:border-primary-200 hover:text-primary-700 active:scale-95'
+            }`}
+          title="Refresh Insights"
         >
-          {isLoading ? '⏳' : '🔄'}
+          {isLoading ? <span className="animate-spin inline-block">⏳</span> : '🔄'}
         </button>
       </div>
 
       {/* Category Filter */}
-      <div style={{
-        display: 'flex',
-        gap: '0.5rem',
-        marginBottom: '1.5rem',
-        overflowX: 'auto',
-        paddingBottom: '0.5rem'
-      }}>
+      <div className="flex gap-2 mb-6 overflow-x-auto pb-2 scrollbar-hide relative z-10 w-full snap-x">
         {categories.map((category) => (
           <button
             key={category.id}
             onClick={() => setSelectedCategory(category.id)}
-            style={{
-              backgroundColor: selectedCategory === category.id ? '#3b82f6' : '#f3f4f6',
-              color: selectedCategory === category.id ? 'white' : '#374151',
-              border: 'none',
-              borderRadius: '9999px',
-              padding: '0.5rem 1rem',
-              cursor: 'pointer',
-              fontSize: '0.75rem',
-              fontWeight: '500',
-              whiteSpace: 'nowrap',
-              transition: 'all 0.2s',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.25rem'
-            }}
-            onMouseOver={(e) => {
-              if (selectedCategory !== category.id) {
-                e.currentTarget.style.backgroundColor = '#e5e7eb';
-              }
-            }}
-            onMouseOut={(e) => {
-              if (selectedCategory !== category.id) {
-                e.currentTarget.style.backgroundColor = '#f3f4f6';
-              }
-            }}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all duration-300 snap-center ${selectedCategory === category.id
+                ? 'bg-primary-600 text-white shadow-md'
+                : 'bg-white bg-opacity-60 text-gray-600 hover:bg-gray-100 hover:text-gray-900 border border-gray-100 shadow-sm'
+              }`}
           >
-            <span>{category.icon}</span>
+            <span className="text-sm">{category.icon}</span>
             <span>{category.name}</span>
           </button>
         ))}
       </div>
 
       {isLoading && (
-        <div style={{
-          textAlign: 'center',
-          padding: '2rem',
-          color: '#6b7280'
-        }}>
-          <div style={{
-            width: '40px',
-            height: '40px',
-            border: '4px solid #e5e7eb',
-            borderTop: '4px solid #3b82f6',
-            borderRadius: '50%',
-            animation: 'spin 1s linear infinite',
-            margin: '0 auto 1rem'
-          }} />
-          <p style={{ margin: 0 }}>Analyzing your health data...</p>
+        <div className="text-center p-8 text-gray-500 relative z-10 flex flex-col items-center flex-grow justify-center">
+          <div className="w-10 h-10 border-4 border-gray-200 border-t-primary-500 rounded-full animate-spin mx-auto mb-4" />
+          <p className="m-0 font-medium animate-pulse text-sm">Analyzing your health data...</p>
         </div>
       )}
 
       {!isLoading && (
-        <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '1rem',
-          maxHeight: '400px',
-          overflowY: 'auto'
-        }}>
+        <div className="flex flex-col gap-3 overflow-y-auto pr-1 flex-grow relative z-10" style={{ maxHeight: '400px' }}>
           {filteredInsights.map((insight, index) => (
             <motion.div
               key={insight.id}
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.3, delay: index * 0.1 }}
+              className="flex items-start p-4 bg-white bg-opacity-80 backdrop-blur-md rounded-xl shadow-sm hover:shadow-md transition-all cursor-pointer group/insight"
               style={{
-                backgroundColor: getTypeBackground(insight.type),
-                borderRadius: '0.75rem',
-                padding: '1rem',
-                border: `1px solid ${getTypeBorder(insight.type)}`,
-                transition: 'all 0.2s',
-                cursor: 'pointer'
+                borderLeft: `4px solid ${getTypeColor(insight.type)}`,
+                borderTop: '1px solid rgba(255,255,255,0.5)',
+                borderRight: '1px solid rgba(255,255,255,0.5)',
+                borderBottom: '1px solid rgba(255,255,255,0.5)'
               }}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
+              whileHover={{ scale: 1.01 }}
+              whileTap={{ scale: 0.99 }}
             >
-              <div style={{
-                display: 'flex',
-                alignItems: 'flex-start',
-                gap: '0.75rem'
-              }}>
-                <div style={{
-                  width: '40px',
-                  height: '40px',
-                  backgroundColor: getTypeColor(insight.type),
-                  borderRadius: '50%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '1.25rem',
-                  flexShrink: 0
-                }}>
-                  {insight.icon}
-                </div>
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    marginBottom: '0.25rem'
-                  }}>
-                    <h4 style={{
-                      fontSize: '0.875rem',
-                      fontWeight: '600',
-                      color: '#1f2937',
-                      margin: 0
-                    }}>
-                      {insight.title}
-                    </h4>
-                    <div style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '0.5rem'
-                    }}>
-                      <div style={{
-                        backgroundColor: getTypeColor(insight.type),
-                        color: 'white',
-                        padding: '0.125rem 0.5rem',
-                        borderRadius: '9999px',
-                        fontSize: '0.625rem',
-                        fontWeight: '500',
-                        textTransform: 'uppercase'
-                      }}>
-                        {insight.impact}
-                      </div>
-                      <span style={{
-                        fontSize: '0.625rem',
-                        color: '#6b7280'
-                      }}>
-                        {formatTimestamp(insight.timestamp)}
-                      </span>
-                    </div>
+              <div
+                className="w-10 h-10 rounded-full flex items-center justify-center text-xl mr-3 flex-shrink-0 shadow-sm bg-opacity-20 transition-transform duration-300 group-hover/insight:scale-110"
+                style={{ backgroundColor: `${getTypeColor(insight.type)}20`, color: getTypeColor(insight.type) }}
+              >
+                {insight.icon}
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center justify-between mb-1 gap-2">
+                  <h4 className="text-sm font-bold text-gray-800 m-0 truncate">
+                    {insight.title}
+                  </h4>
+                  <div className="flex items-center gap-1.5 flex-shrink-0">
+                    <span
+                      className="px-2 py-0.5 rounded-full text-[10px] font-bold text-white uppercase tracking-wider shadow-sm"
+                      style={{ backgroundColor: getTypeColor(insight.type) }}
+                    >
+                      {insight.impact}
+                    </span>
+                    <span className="text-[10px] text-gray-400 font-medium whitespace-nowrap">
+                      {formatTimestamp(insight.timestamp)}
+                    </span>
                   </div>
-                  <p style={{
-                    fontSize: '0.75rem',
-                    color: '#6b7280',
-                    margin: '0 0 0.5rem 0',
-                    lineHeight: '1.4'
-                  }}>
-                    {insight.description}
-                  </p>
-                  {insight.actionable && (
-                    <div style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '0.25rem',
-                      fontSize: '0.625rem',
-                      color: getTypeColor(insight.type),
-                      fontWeight: '500'
-                    }}>
-                      <span>💡</span>
-                      <span>Actionable insight</span>
-                    </div>
-                  )}
                 </div>
+                <p className="text-xs text-gray-600 m-0 mb-2 leading-relaxed font-medium">
+                  {insight.description}
+                </p>
+                {insight.actionable && (
+                  <div
+                    className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-wide inline-flex bg-opacity-10 px-2 py-1 rounded-md"
+                    style={{ color: getTypeColor(insight.type), backgroundColor: `${getTypeColor(insight.type)}15` }}
+                  >
+                    <span>💡</span>
+                    <span>Actionable insight</span>
+                  </div>
+                )}
               </div>
             </motion.div>
           ))}
@@ -394,27 +272,14 @@ const HealthInsightsCard: React.FC = () => {
       )}
 
       {!isLoading && filteredInsights.length === 0 && (
-        <div style={{
-          textAlign: 'center',
-          padding: '2rem',
-          color: '#6b7280'
-        }}>
-          <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🧠</div>
-          <p style={{ margin: '0 0 1rem 0', fontSize: '1rem' }}>
+        <div className="text-center p-8 text-gray-500 bg-gray-50 bg-opacity-50 rounded-xl border border-dashed border-gray-300 relative z-10 m-auto mt-4 mb-4">
+          <div className="text-4xl mb-3 opacity-50">🧠</div>
+          <p className="m-0 mb-4 text-sm font-medium">
             No insights available for this category.
           </p>
           <button
             onClick={generateInsights}
-            style={{
-              backgroundColor: '#3b82f6',
-              color: 'white',
-              border: 'none',
-              borderRadius: '0.5rem',
-              padding: '0.75rem 1.5rem',
-              cursor: 'pointer',
-              fontSize: '0.875rem',
-              fontWeight: '500'
-            }}
+            className="bg-primary-500 hover:bg-primary-600 text-white font-bold py-2 px-4 rounded-lg transition-colors shadow-sm text-sm"
           >
             Generate Insights
           </button>
@@ -423,75 +288,37 @@ const HealthInsightsCard: React.FC = () => {
 
       {/* Summary Stats */}
       {!isLoading && insights.length > 0 && (
-        <div style={{
-          marginTop: '1.5rem',
-          padding: '1rem',
-          backgroundColor: '#f8fafc',
-          borderRadius: '0.5rem',
-          border: '1px solid #e2e8f0'
-        }}>
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))',
-            gap: '1rem'
-          }}>
-            <div style={{ textAlign: 'center' }}>
-              <div style={{
-                fontSize: '1.5rem',
-                fontWeight: 'bold',
-                color: '#3b82f6'
-              }}>
+        <div className="mt-4 p-4 bg-white bg-opacity-50 backdrop-blur-sm rounded-xl border border-white border-opacity-60 relative z-10 shadow-sm">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <div className="text-center">
+              <div className="text-2xl font-black text-primary-500">
                 {insights.filter(i => i.type === 'positive').length}
               </div>
-              <div style={{
-                fontSize: '0.75rem',
-                color: '#6b7280'
-              }}>
+              <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
                 Positive
               </div>
             </div>
-            <div style={{ textAlign: 'center' }}>
-              <div style={{
-                fontSize: '1.5rem',
-                fontWeight: 'bold',
-                color: '#f59e0b'
-              }}>
+            <div className="text-center">
+              <div className="text-2xl font-black text-amber-500">
                 {insights.filter(i => i.type === 'warning').length}
               </div>
-              <div style={{
-                fontSize: '0.75rem',
-                color: '#6b7280'
-              }}>
+              <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
                 Warnings
               </div>
             </div>
-            <div style={{ textAlign: 'center' }}>
-              <div style={{
-                fontSize: '1.5rem',
-                fontWeight: 'bold',
-                color: '#8b5cf6'
-              }}>
+            <div className="text-center">
+              <div className="text-2xl font-black text-purple-500">
                 {insights.filter(i => i.type === 'achievement').length}
               </div>
-              <div style={{
-                fontSize: '0.75rem',
-                color: '#6b7280'
-              }}>
+              <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
                 Achievements
               </div>
             </div>
-            <div style={{ textAlign: 'center' }}>
-              <div style={{
-                fontSize: '1.5rem',
-                fontWeight: 'bold',
-                color: '#10b981'
-              }}>
+            <div className="text-center">
+              <div className="text-2xl font-black text-emerald-500">
                 {insights.filter(i => i.actionable).length}
               </div>
-              <div style={{
-                fontSize: '0.75rem',
-                color: '#6b7280'
-              }}>
+              <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
                 Actionable
               </div>
             </div>

@@ -157,47 +157,15 @@ const GoalTrackerCard: React.FC = () => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      style={{
-        backgroundColor: 'white',
-        borderRadius: '1rem',
-        padding: '1.5rem',
-        boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
-        border: '1px solid #e5e7eb',
-        height: '100%'
-      }}
+      className="glass-panel p-6 h-full flex flex-col"
     >
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginBottom: '1.5rem'
-      }}>
-        <h3 style={{
-          fontSize: '1.25rem',
-          fontWeight: 'bold',
-          color: '#1f2937',
-          margin: 0,
-          display: 'flex',
-          alignItems: 'center',
-          gap: '0.5rem'
-        }}>
+      <div className="flex items-center justify-between mb-6">
+        <h3 className="text-xl font-extrabold text-gray-800 m-0 flex items-center gap-2">
           🎯 Goal Tracker
         </h3>
         <button
           onClick={() => setShowAddGoal(!showAddGoal)}
-          style={{
-            backgroundColor: '#3b82f6',
-            color: 'white',
-            border: 'none',
-            borderRadius: '0.5rem',
-            padding: '0.5rem 1rem',
-            cursor: 'pointer',
-            fontSize: '0.875rem',
-            fontWeight: '500',
-            transition: 'background-color 0.2s'
-          }}
-          onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#2563eb'}
-          onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#3b82f6'}
+          className="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors duration-200 shadow-sm"
         >
           + Add Goal
         </button>
@@ -208,81 +176,47 @@ const GoalTrackerCard: React.FC = () => {
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: 'auto' }}
           exit={{ opacity: 0, height: 0 }}
-          style={{
-            backgroundColor: '#f9fafb',
-            borderRadius: '0.75rem',
-            padding: '1rem',
-            marginBottom: '1rem',
-            border: '1px solid #e5e7eb'
-          }}
+          className="bg-white bg-opacity-70 backdrop-blur rounded-xl p-4 mb-4 border border-gray-100 shadow-sm overflow-hidden"
         >
-          <h4 style={{ margin: '0 0 1rem 0', fontSize: '1rem', color: '#374151' }}>
+          <h4 className="text-gray-800 font-bold mb-4">
             Add New Goal
           </h4>
-          <div style={{ display: 'grid', gap: '0.75rem' }}>
+          <div className="grid gap-3">
             <input
               type="text"
               placeholder="Goal title"
               value={newGoal.title}
               onChange={(e) => setNewGoal({ ...newGoal, title: e.target.value })}
-              style={{
-                width: '100%',
-                padding: '0.5rem',
-                border: '1px solid #d1d5db',
-                borderRadius: '0.375rem',
-                fontSize: '0.875rem'
-              }}
+              className="w-full p-2.5 bg-white bg-opacity-80 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all"
             />
             <input
               type="text"
               placeholder="Description"
               value={newGoal.description}
               onChange={(e) => setNewGoal({ ...newGoal, description: e.target.value })}
-              style={{
-                width: '100%',
-                padding: '0.5rem',
-                border: '1px solid #d1d5db',
-                borderRadius: '0.375rem',
-                fontSize: '0.875rem'
-              }}
+              className="w-full p-2.5 bg-white bg-opacity-80 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all"
             />
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
+            <div className="grid grid-cols-2 gap-3">
               <input
                 type="number"
                 placeholder="Target"
                 value={newGoal.target}
                 onChange={(e) => setNewGoal({ ...newGoal, target: e.target.value })}
-                style={{
-                  padding: '0.5rem',
-                  border: '1px solid #d1d5db',
-                  borderRadius: '0.375rem',
-                  fontSize: '0.875rem'
-                }}
+                className="w-full p-2.5 bg-white bg-opacity-80 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all"
               />
               <input
                 type="text"
                 placeholder="Unit"
                 value={newGoal.unit}
                 onChange={(e) => setNewGoal({ ...newGoal, unit: e.target.value })}
-                style={{
-                  padding: '0.5rem',
-                  border: '1px solid #d1d5db',
-                  borderRadius: '0.375rem',
-                  fontSize: '0.875rem'
-                }}
+                className="w-full p-2.5 bg-white bg-opacity-80 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all"
               />
             </div>
-            <div style={{ display: 'flex', gap: '0.5rem' }}>
+            <div className="flex gap-3">
               <select
                 value={newGoal.category}
                 onChange={(e) => setNewGoal({ ...newGoal, category: e.target.value as Goal['category'] })}
-                style={{
-                  flex: 1,
-                  padding: '0.5rem',
-                  border: '1px solid #d1d5db',
-                  borderRadius: '0.375rem',
-                  fontSize: '0.875rem'
-                }}
+                className="flex-1 p-2.5 bg-white bg-opacity-80 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all"
               >
                 <option value="fitness">Fitness</option>
                 <option value="nutrition">Nutrition</option>
@@ -292,49 +226,23 @@ const GoalTrackerCard: React.FC = () => {
               <select
                 value={newGoal.priority}
                 onChange={(e) => setNewGoal({ ...newGoal, priority: e.target.value as Goal['priority'] })}
-                style={{
-                  flex: 1,
-                  padding: '0.5rem',
-                  border: '1px solid #d1d5db',
-                  borderRadius: '0.375rem',
-                  fontSize: '0.875rem'
-                }}
+                className="flex-1 p-2.5 bg-white bg-opacity-80 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all"
               >
                 <option value="low">Low</option>
                 <option value="medium">Medium</option>
                 <option value="high">High</option>
               </select>
             </div>
-            <div style={{ display: 'flex', gap: '0.5rem' }}>
+            <div className="flex gap-3 pt-2">
               <button
                 onClick={addGoal}
-                style={{
-                  flex: 1,
-                  backgroundColor: '#10b981',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '0.375rem',
-                  padding: '0.5rem',
-                  cursor: 'pointer',
-                  fontSize: '0.875rem',
-                  fontWeight: '500'
-                }}
+                className="flex-[2] bg-emerald-500 hover:bg-emerald-600 text-white py-2.5 rounded-lg text-sm font-semibold shadow-sm transition-colors"
               >
-                Add Goal
+                Save Goal
               </button>
               <button
                 onClick={() => setShowAddGoal(false)}
-                style={{
-                  flex: 1,
-                  backgroundColor: '#6b7280',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '0.375rem',
-                  padding: '0.5rem',
-                  cursor: 'pointer',
-                  fontSize: '0.875rem',
-                  fontWeight: '500'
-                }}
+                className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 py-2.5 rounded-lg text-sm font-semibold transition-colors"
               >
                 Cancel
               </button>
@@ -343,157 +251,78 @@ const GoalTrackerCard: React.FC = () => {
         </motion.div>
       )}
 
-      <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '1rem',
-        maxHeight: '400px',
-        overflowY: 'auto'
-      }}>
+      <div className="flex flex-col gap-4 overflow-y-auto pr-1 flex-grow" style={{ maxHeight: '400px' }}>
         {goals.map((goal, index) => (
           <motion.div
             key={goal.id}
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.3, delay: index * 0.1 }}
-            style={{
-              backgroundColor: '#f9fafb',
-              borderRadius: '0.75rem',
-              padding: '1rem',
-              border: '1px solid #e5e7eb',
-              transition: 'all 0.2s'
-            }}
+            className="bg-white bg-opacity-60 backdrop-blur-sm rounded-xl p-5 border border-white border-opacity-40 transition-all duration-300 shadow-sm hover:shadow-md"
           >
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              marginBottom: '0.75rem'
-            }}>
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.5rem'
-              }}>
-                <span style={{ fontSize: '1.25rem' }}>{goal.icon}</span>
+            <div className="flex items-start justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <div className="text-3xl bg-white p-2 rounded-lg shadow-sm">{goal.icon}</div>
                 <div>
-                  <h4 style={{
-                    fontSize: '0.875rem',
-                    fontWeight: '600',
-                    color: '#1f2937',
-                    margin: 0
-                  }}>
+                  <h4 className="text-gray-900 font-bold text-base mb-0.5">
                     {goal.title}
                   </h4>
-                  <p style={{
-                    fontSize: '0.75rem',
-                    color: '#6b7280',
-                    margin: 0
-                  }}>
+                  <p className="text-sm text-gray-500 m-0 leading-tight">
                     {goal.description}
                   </p>
                 </div>
               </div>
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.5rem'
-              }}>
-                <div style={{
-                  backgroundColor: getPriorityColor(goal.priority),
-                  color: 'white',
-                  padding: '0.125rem 0.5rem',
-                  borderRadius: '9999px',
-                  fontSize: '0.625rem',
-                  fontWeight: '500',
-                  textTransform: 'uppercase'
-                }}>
+              <div className="flex flex-col items-end gap-1">
+                <div
+                  className="px-2 py-0.5 rounded-full text-[10px] font-bold text-white uppercase tracking-wider shadow-sm"
+                  style={{ backgroundColor: getPriorityColor(goal.priority) }}
+                >
                   {goal.priority}
                 </div>
-                <span style={{
-                  fontSize: '0.75rem',
-                  color: '#6b7280'
-                }}>
+                <span className="text-xs font-semibold text-gray-400 bg-gray-100 px-2 py-0.5 rounded-md">
                   {getDaysRemaining(goal.deadline)}d left
                 </span>
               </div>
             </div>
 
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              marginBottom: '0.5rem'
-            }}>
-              <span style={{
-                fontSize: '1.25rem',
-                fontWeight: 'bold',
-                color: goal.color
-              }}>
-                {goal.current.toFixed(goal.unit === 'kg' ? 1 : 0)} / {goal.target} {goal.unit}
-              </span>
-              <span style={{
-                fontSize: '0.875rem',
-                fontWeight: '500',
-                color: '#374151'
-              }}>
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-baseline gap-1">
+                <span
+                  className="text-xl font-black"
+                  style={{ color: goal.color }}
+                >
+                  {goal.current.toFixed(goal.unit === 'kg' ? 1 : 0)}
+                </span>
+                <span className="text-gray-500 font-medium text-sm">
+                  / {goal.target} {goal.unit}
+                </span>
+              </div>
+              <span className="text-sm font-bold text-gray-700">
                 {getProgressPercentage(goal.current, goal.target).toFixed(0)}%
               </span>
             </div>
 
-            <div style={{
-              width: '100%',
-              height: '8px',
-              backgroundColor: '#e5e7eb',
-              borderRadius: '4px',
-              overflow: 'hidden',
-              marginBottom: '0.75rem'
-            }}>
+            <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden mb-4 shadow-inner">
               <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: `${getProgressPercentage(goal.current, goal.target)}%` }}
-                transition={{ duration: 1, delay: index * 0.1 }}
-                style={{
-                  height: '100%',
-                  backgroundColor: goal.color,
-                  borderRadius: '4px'
-                }}
+                transition={{ duration: 1, delay: index * 0.1, type: "spring" }}
+                className="h-full rounded-full"
+                style={{ backgroundColor: goal.color }}
               />
             </div>
 
-            <div style={{
-              display: 'flex',
-              gap: '0.5rem'
-            }}>
+            <div className="flex gap-2">
               <button
                 onClick={() => updateGoalProgress(goal.id, -1)}
-                style={{
-                  flex: 1,
-                  backgroundColor: '#f3f4f6',
-                  color: '#374151',
-                  border: '1px solid #d1d5db',
-                  borderRadius: '0.375rem',
-                  padding: '0.375rem',
-                  cursor: 'pointer',
-                  fontSize: '0.75rem',
-                  fontWeight: '500'
-                }}
+                className="flex-1 py-1.5 bg-white bg-opacity-80 border border-gray-200 rounded-md text-xs font-bold text-gray-600 hover:bg-gray-50 transition-colors shadow-sm active:scale-95"
               >
                 -1
               </button>
               <button
                 onClick={() => updateGoalProgress(goal.id, 1)}
-                style={{
-                  flex: 1,
-                  backgroundColor: goal.color,
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '0.375rem',
-                  padding: '0.375rem',
-                  cursor: 'pointer',
-                  fontSize: '0.75rem',
-                  fontWeight: '500'
-                }}
+                className="flex-1 py-1.5 text-white rounded-md text-xs font-bold transition-all shadow-sm active:scale-95 hover:brightness-110"
+                style={{ backgroundColor: goal.color }}
               >
                 +1
               </button>
@@ -503,13 +332,9 @@ const GoalTrackerCard: React.FC = () => {
       </div>
 
       {goals.length === 0 && (
-        <div style={{
-          textAlign: 'center',
-          padding: '2rem',
-          color: '#6b7280'
-        }}>
-          <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🎯</div>
-          <p style={{ margin: '0 0 1rem 0', fontSize: '1rem' }}>
+        <div className="text-center p-8 text-gray-500 bg-gray-50 bg-opacity-50 rounded-xl border border-dashed border-gray-300">
+          <div className="text-5xl mb-4 opacity-50">🎯</div>
+          <p className="m-0 text-base font-medium">
             No goals set yet. Start by adding your first goal!
           </p>
         </div>
