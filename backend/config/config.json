@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "root",
+    "password": "YOUR_MYSQL_ROOT_PASSWORD",
+    "database": "health_tracker_dev",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "root",
+    "password": "",
+    "database": "health_tracker_test",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "",
+    "password": "",
+    "database": "",
+    "host": "",
+    "dialect": "mysql"
+  }
+}
